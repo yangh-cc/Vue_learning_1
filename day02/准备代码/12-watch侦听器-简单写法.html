@@ -74,7 +74,7 @@
       <!-- 条件选择框 -->
       <div class="query">
         <span>翻译成的语言：</span>
-        <select>
+        <select v-model="obj.lang">
           <option value="italy">意大利</option>
           <option value="english">英语</option>
           <option value="german">德语</option>
@@ -88,7 +88,7 @@
           <span><i>⌨️</i>文档翻译</span>
         </div>
         <div class="output-wrap">
-          <div class="transbox">mela</div>
+          <div class="transbox">{{result}}</div>
         </div>
       </div>
     </div>
@@ -101,18 +101,36 @@
       // （1）words：需要被翻译的文本（必传）
       // （2）lang： 需要被翻译成的语言（可选）默认值-意大利
       // -----------------------------------------------
-      
+
       const app = new Vue({
-        el: '#app',
+        el: "#app",
         data: {
-          words: '',
-          // obj: {
-          //   words: ''
-          // }
+          obj: {
+            words: "小白",
+            lang:'italy'
+          },
+          result: "",
         },
         // 具体讲解：(1) watch语法 (2) 具体业务实现
-       
-      })
+        watch: {
+         obj:{
+          deep :true,
+          immediate: true,
+          handler(newValue){
+            clearTimeout(this.timer)
+            this.timer = setTimeout(async () => {
+              const res = await axios({
+                url:'https://applet-base-api-t.itheima.net/api/translate',
+                params: newValue
+              })
+              this.result= res.data.data
+            
+              
+            },300)
+          }
+         }
+        },  
+      });
     </script>
   </body>
 </html>

@@ -39,9 +39,8 @@
 
   <div id="app">
     <ul>
-      <li><a class="active" href="#">京东秒杀</a></li>
-      <li><a href="#">每日特价</a></li>
-      <li><a href="#">品类秒杀</a></li>
+      <li v-for="(item,index) in list" :key="item.id" @click="activeIndex = index">
+        <a :class="{active: index === activeIndex}" href="#">{{item.name}}</a></li>
     </ul>
   </div>
   <script src="./vue.js"></script>
@@ -49,7 +48,7 @@
     const app = new Vue({
       el: '#app',
       data: {
-        
+        activeIndex:0,
         list: [
           { id: 1, name: '京东秒杀' },
           { id: 2, name: '每日特价' },
