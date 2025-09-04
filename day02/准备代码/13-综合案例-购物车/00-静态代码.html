@@ -19,7 +19,7 @@
         <span>购物车</span>
       </div>
       <!-- 购物车主体 -->
-      <div class="main">
+      <div class="main"  v-if="fruitList.length>0">
         <div class="table">
           <!-- 头部 -->
           <div class="thead">
@@ -34,33 +34,18 @@
           </div>
           <!-- 身体 -->
           <div class="tbody">
-            <div class="tr active">
-              <div class="td"><input type="checkbox" checked /></div>
-              <div class="td"><img src="http://autumnfish.cn/static/火龙果.png" alt="" /></div>
-              <div class="td">6</div>
+            <div :class="{ active: item.isChecked}" v-for="(item,index) in fruitList" :key="item.id" >
+              <div class="td"><input type="checkbox" v-model="item.isChecked" /></div>
+              <div class="td"><img :src="item.icon" alt="" /></div>
+              <div class="td">{{ item.price }}</div>
               <div class="td">
                 <div class="my-input-number">
-                  <button class="decrease"> - </button>
-                  <span class="my-input__inner">2</span>
+                  <button class="decrease" @click="sub(item.id)"> - </button>
+                  <span class="my-input__inner">{{ item.num }}</span>
                   <button class="increase"> + </button>
                 </div>
               </div>
               <div class="td">12</div>
-              <div class="td"><button>删除</button></div>
-            </div>
-
-            <div class="tr">
-              <div class="td"><input type="checkbox"/></div>
-              <div class="td"><img src="http://autumnfish.cn/static/荔枝.png" alt="" /></div>
-              <div class="td">7</div>
-              <div class="td">
-                <div class="my-input-number">
-                  <button disabled class="decrease"> - </button>
-                  <span class="my-input__inner">1</span>
-                  <button class="increase"> + </button>
-                </div>
-              </div>
-              <div class="td">14</div>
               <div class="td"><button>删除</button></div>
             </div>
           </div>
@@ -81,7 +66,7 @@
         </div>
       </div>
       <!-- 空车 -->
-      <div class="empty">🛒空空如也</div>
+      <div class="empty"v-else>🛒空空如也</div>
     </div>
     <script src="../vue.js"></script>
     <script>
@@ -127,6 +112,14 @@
             },
           ],
         },
+        methods:{
+          del(id){
+            
+             this.fruitList = this.fruitList.filter((item)=>{
+              item.id !== id
+            })
+          }
+        }
       })
     </script>
   </body>
