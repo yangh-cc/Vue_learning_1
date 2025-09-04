@@ -11,7 +11,7 @@
     />
     <style>
       .red {
-        color: red!important;
+        color: red !important;
       }
       .search {
         width: 300px;
@@ -36,7 +36,7 @@
         flex: 1;
         padding: 0 30px;
       }
-      .list-box  a {
+      .list-box a {
         text-decoration: none;
       }
       .echarts-box {
@@ -67,12 +67,11 @@
       <div class="contain">
         <!-- 左侧列表 -->
         <div class="list-box">
-
           <!-- 添加资产 -->
           <form class="my-form">
-            <input type="text" class="form-control" placeholder="消费名称" />
-            <input type="text" class="form-control" placeholder="消费价格" />
-            <button type="button" class="btn btn-primary">添加账单</button>
+            <input v-model.trim="name" type="text" class="form-control" placeholder="消费名称" />
+            <input v-model.number="price" type="text" class="form-control" placeholder="消费价格" />
+            <button @click="add" type="button" class="btn btn-primary">添加账单</button>
           </form>
 
           <table class="table table-hover">
@@ -85,51 +84,149 @@
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>1</td>
-                <td>帽子</td>
-                <td>99.00</td>
-                <td><a href="javascript:;">删除</a></td>
+              <tr v-for="(item,index) in list" :key="item.id">
+                <td>{{ index +1}}</td>
+                <td>{{ item.name}}</td>
+                <td :class="{ red: item.price >500 }">{{ item.price.toFixed(2) }}</td>
+                <td><a @click="del(item.id)" href="javascript:;">删除</a></td>
               </tr>
-              <tr>
-                <td>2</td>
-                <td>大衣</td>
-                <td class="red">199.00</td>
-                <td><a href="javascript:;">删除</a></td>
-              </tr>
+              <tr></tr>
             </tbody>
+
             <tfoot>
               <tr>
-                <td colspan="4">消费总计： 298.00</td>
+                <td colspan="4">消费总计： {{ totalPrice.toFixed(2) }}</td>
               </tr>
             </tfoot>
           </table>
         </div>
-        
+
         <!-- 右侧图表 -->
         <div class="echarts-box" id="main"></div>
       </div>
     </div>
+     <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.0/dist/echarts.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+      
     <script src="../echarts.min.js"></script>
     <script src="../vue.js"></script>
     <script src="../axios.js"></script>
     <script>
+      
       /**
        * 接口文档地址：
        * https://www.apifox.cn/apidoc/shared-24459455-ebb1-4fdc-8df8-0aff8dc317a8/api-53371058
-       * 
+       *
        * 功能需求：
        * 1. 基本渲染
+       * (1)立刻发送请求获取数据 created
+       * (2)拿到数据，存到data 的响应式数据中
+       * (3)结合数据，进行渲染 v-for
+       * (4)消费统计 => 计算属性
        * 2. 添加功能
        * 3. 删除功能
        * 4. 饼图渲染
        */
       const app = new Vue({
-        el: '#app',
+        el: "#app",
         data: {
-          
+          list: [],
+          name:'',
+          price:''
         },
-      })
+        computed: {
+          totalPrice() {
+            return this.list.reduce((sum, item) => sum + item.price, 0);
+          },
+        },
+        created() {
+          this.getList()
+        },
+        mounted () {
+          let myChart = echarts.init(document.querySelector('#main'))
+          myChart.setOption({
+            // 大标题
+            title: {
+              text: '消费账单列表',
+              left: 'center'
+            },
+            // 提示框
+            tooltip: {
+              trigger: 'item'
+            },
+            // 图例
+            legend: {
+              orient: 'vertical',
+              left: 'left'
+            },
+            // 数据项
+            series: [
+              {
+                name: '消费账单',
+                type: 'pie',
+                radius: '50%', // 半径
+                data: [
+                  // { value: 1048, name: '球鞋' },
+                  // { value: 735, name: '防晒霜' }
+                ],
+                emphasis: {
+                  itemStyle: {
+                    shadowBlur: 10,
+                    shadowOffsetX: 0,
+                    shadowColor: 'rgba(0, 0, 0, 0.5)'
+                  }
+                }
+              }
+            ]
+          })
+        },
+        methods:{
+          async getList () {
+             const res = await axios.get("https://applet-base-api-t.itheima.net/bill", 
+            {
+              params: {
+                creator: "小白",
+              }, 
+              
+            });
+          this.list = res.data.data;
+
+          //更新图表
+          this.myChart.setOption({
+            series:[
+              {
+                data: this.list.map(item => ({ value: item.price , name: item.name}))
+              }
+            ]
+          })
+          },
+          async add (){
+            if (!this.name) {
+              alert('请输入消费名称')
+              return
+            }
+            if (typeof this.price !=='number') {
+              alert('请输入正确的消费价格')
+              return
+            }
+            const res =await axios.post('https://applet-base-api-t.itheima.net/bill' ,{
+              creator: 'xiaobai',
+              name:this.name,
+              price:this.price
+            })
+            //重新渲染一次
+            this.getList()
+
+            this.name= ''
+            this.price= ''
+          },
+          async del(id) {
+            const res = await axios.delete(`https://applet-base-api-t.itheima.net/bill/${id}` )
+            this.getList()
+          }
+        }
+      });
     </script>
   </body>
 </html>
