@@ -25,5 +25,29 @@ export default {
 </script>
 
 <style>
-
+.shortcut {
+  height: 52px;
+  line-height: 52px;
+  background-color: #333;
+}
+.shortcut .wrapper {
+  display: flex;
+  justify-content: flex-end;
+}
+.shortcut ul {
+  display: flex;
+}
+.shortcut a {
+  padding: 0 15px;
+  border-right: 1px solid #999;
+  color: #fff;
+  font-size: 14px;
+  line-height: 14px;
+}
+.shortcut .login {
+  color: #5EB69C;
+}
+.shortcut .icon-mobile-phone {
+  margin-right: 5px;
+}
 </style>
