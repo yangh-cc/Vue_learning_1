@@ -13,10 +13,8 @@ import SonB from './components/SonB.vue'
 export default {
   provide() {
     return {
-      // 简单类型 是非响应式的
-      color: this.color,
-      // 复杂类型 是响应式的
-      userInfo: this.userInfo,
+     color: this.color,
+     userInfor: this.userInfo//复杂类型 响应式 推荐
     }
   },
   data() {

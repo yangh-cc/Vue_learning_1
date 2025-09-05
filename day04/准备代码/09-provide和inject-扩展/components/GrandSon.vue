@@ -7,7 +7,7 @@
 
 <script>
 export default {
-  inject: ['color', 'userInfo'],
+  inject:['color','userInfo']
 }
 </script>
 

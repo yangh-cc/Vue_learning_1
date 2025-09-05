@@ -1,6 +1,12 @@
 <template>
   <div class="app">
-    <UserInfo></UserInfo>
+    <UserInfo
+    :username="username"
+    :age="age"
+    :isSingle="isSingle"
+    :car="car"
+    :hobby="hobby"
+    ></UserInfo>
   </div>
 </template>
 
