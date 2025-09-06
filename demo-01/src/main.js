@@ -1,9 +1,9 @@
 import Vue from 'vue'
 import App from './App.vue'
-
-
+import VueRouter from 'vue-router'
+import { routes } from './router'
 Vue.config.productionTip = false
-
+Vue.use(VueRouter)
 
 //封装全局指令 focus
 Vue.directive('focus',{
@@ -13,6 +13,8 @@ Vue.directive('focus',{
   }
 })
 
+const router=new VueRouter(routes)
 new Vue({
   render: h => h(App),
+  router
 }).$mount('#app')

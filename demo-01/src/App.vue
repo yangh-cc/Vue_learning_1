@@ -1,27 +1,11 @@
 <template>
-  <div class="table-case">
-    <MyTable :data="goods">
-      <template #head>
-        
-          <tr>
-            <th>编号</th>
-            <th>名称</th>
-            <th>图片</th>
-            <th width="100px">标签</th>
-          </tr>
-      </template>
-      <template #body="{item,index}">
-        
-         <td>{{ index + 1 }}</td>
-          <td>{{ item.name }}</td>
-          <td>
-            <img :src="item.picture" />
-          </td>
-          <td>
-            <myTag v-model="item.tag"></myTag>
-          </td>
-      </template>
-    </MyTable>
+  <div>
+    <a href="#/head">head</a><br>
+    <a href="#/body">jdg</a><br>
+    <a href="#/footer">footer</a><br>
+    <div class="table-case"></div>
+    <RouterView></RouterView> 
+    
   </div>
 </template>
 
@@ -73,6 +57,7 @@ export default {
 
 <style lang="less" scoped>
 .table-case {
+  height: 1000px;
   width: 1000px;
   margin: 50px auto;
   img {
