@@ -17,16 +17,7 @@
             <img src="https://yanxuan-item.nosdn.127.net/f8c37ffa41ab1eb84bff499e1f6acfc7.jpg" />
           </td>
           <td>
-            <div class="my-tag">
-              <!-- <input 
-                class="input"
-                type="text"
-                placeholder="输入标签"
-              /> -->
-              <div class="text">
-                茶具
-              </div>
-            </div>
+           <myTag></myTag>
           </td>
         </tr>
         <tr>
@@ -36,17 +27,7 @@
             <img src="https://yanxuan-item.nosdn.127.net/221317c85274a188174352474b859d7b.jpg" />
           </td>
           <td>
-            <div class="my-tag">
-              <!-- <input
-                ref="inp"
-                class="input"
-                type="text"
-                placeholder="输入标签"
-              /> -->
-              <div class="text">
-                男靴
-              </div>
-            </div>
+            
           </td>
         </tr>
       </tbody>
@@ -55,9 +36,12 @@
 </template>
 
 <script>
+import myTag from './components/myTag.vue';
 export default {
   name: 'TableCase',
-  components: {},
+  components: {
+    myTag
+  },
   data() {
     return {
       goods: [
@@ -137,21 +121,6 @@ export default {
       color: #999;
     }
   }
-  .my-tag {
-    cursor: pointer;
-    .input {
-      appearance: none;
-      outline: none;
-      border: 1px solid #ccc;
-      width: 100px;
-      height: 40px;
-      box-sizing: border-box;
-      padding: 10px;
-      color: #666;
-      &::placeholder {
-        color: #666;
-      }
-    }
-  }
+ 
 }
 </style>

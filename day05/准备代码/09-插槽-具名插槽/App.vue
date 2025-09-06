@@ -1,7 +1,13 @@
 <template>
   <div>
     <MyDialog>
-      一段内容
+      <template v-slot:head>dabiaoti</template>
+      <template v-slot:content>neirong</template>
+      <template #footer>
+        <button>确认</button>
+        <button>取消</button>
+      </template>
+
     </MyDialog>
   </div>
 </template>

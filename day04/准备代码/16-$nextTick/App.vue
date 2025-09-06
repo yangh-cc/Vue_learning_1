@@ -24,7 +24,7 @@ export default {
    handleEdit(){
     this.isShowEdit= true
 
-    this.$nexTick(() =>{
+    this.$nextTick(() =>{
       this.$refs.inp.foucs()
     })
    }

@@ -1,8 +1,14 @@
 <template>
   <div>
-    <MyTable>
+    <MyTable :data="list">
+      <templata #default="obj">
+        <button @click="delete(obj.row.id)">删除</button>
+      </templata>
     </MyTable>
-    <MyTable>
+    <MyTable :data="list2">
+      <templata #default="{ row }">
+        <button @click="show(row)">查看</button>
+      </templata>
     </MyTable>
   </div>
 </template>
@@ -26,6 +32,14 @@ export default {
   },
   components: {
     MyTable
+  },
+  methods:{
+    del (id){
+      this.list= this.list.filter(item => item.id !== id)
+    },
+    show(row){
+      alert(`姓名：${row.anme}; 年纪：${row.age}`)
+    }
   }
 }
 </script>

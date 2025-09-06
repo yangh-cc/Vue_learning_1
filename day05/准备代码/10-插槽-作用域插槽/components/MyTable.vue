@@ -9,30 +9,15 @@
       </tr>
     </thead>
     <tbody>
-      <tr>
-        <td>1</td>
-        <td>小张</td>
-        <td>8</td>
+      <tr v-for="(item,index) in data" :key="item.id" >
+        <td>{{ index +1 }}</td>
+        <td>{{ item.name }}</td>
+        <td>{{ item.age }}</td>
         <td>
-          <button>删除</button>
+         <slot :row="item" msg="测试文本"></slot>
         </td>
       </tr>
-      <tr>
-        <td>1</td>
-        <td>小张</td>
-        <td>8</td>
-        <td>
-          <button>删除</button>
-        </td>
-      </tr>
-      <tr>
-        <td>1</td>
-        <td>小张</td>
-        <td>8</td>
-        <td>
-          <button>删除</button>
-        </td>
-      </tr>
+     
     </tbody>
   </table>
 </template>
@@ -41,6 +26,7 @@
 export default {
   props: {
     data: Array,
+    
   },
 }
 </script>
