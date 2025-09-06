@@ -14,7 +14,7 @@ export default {
   provide() {
     return {
      color: this.color,
-     userInfor: this.userInfo//复杂类型 响应式 推荐
+     userInfo: this.userInfo//复杂类型 响应式 推荐
     }
   },
   data() {
