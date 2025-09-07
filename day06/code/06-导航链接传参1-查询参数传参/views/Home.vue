@@ -7,6 +7,9 @@
     </div>
     <div class="hot-link">
       热门搜索：
+      <!-- <router-link to="/search?key=黑马程序员">黑马程序员</router-link>
+      <router-link to="/search?key=前端培训">前端培训</router-link>
+      <router-link to="/search?key=如何成为前端大牛">如何成为前端大牛</router-link> -->
       <router-link to="/search?key=黑马程序员">黑马程序员</router-link>
       <router-link to="/search?key=前端培训">前端培训</router-link>
       <router-link to="/search?key=如何成为前端大牛">如何成为前端大牛</router-link>

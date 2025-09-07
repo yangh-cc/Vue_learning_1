@@ -1,13 +1,9 @@
 <template>
-  <div>headjdh</div>
+  <div>Collect</div>
 </template>
 
 <script>
 export default {
-
+  name: 'CollectPage'
 }
 </script>
-
-<style>
-
-</style>
