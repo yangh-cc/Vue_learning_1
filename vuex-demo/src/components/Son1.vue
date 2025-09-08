@@ -7,8 +7,20 @@
     <button @click="changeTitle">改标题</button>
     <button @click="handleChange">1秒后改成666</button>
 
-    <hr />
+    <hr>
     <div>{{ $store.getters.filterList }}</div>
+
+    <hr>
+    <!-- 测试访问模块中的state-原生 -->
+    <div>{{ $store.state.user.userInfo.name }}</div>
+    <button @click="updateUser">更新个人信息</button>
+    <button @click="updateUser2">1秒后更新信息</button>
+
+    <div>{{ $store.state.setting.theme }}</div>
+    <button @click="updateTheme">更新主题色</button>
+    <hr>
+    <!-- 测试访问模块中的setters-原生 -->
+    <div>{{ $store.getters['user/UpperCaseName'] }}</div>
     <div></div>
   </div>
 </template>
@@ -29,6 +41,21 @@ export default {
     },
     handleChange () {
       this.$store.dispatch('changeCountAction', 666)
+    },
+    updateUser () {
+      this.$store.commit('user/setUser', {
+        name: 'yanghuan',
+        age: 21
+      })
+    },
+    updateTheme () {
+      this.$store.commit('setting/setTheme', 'pink')
+    },
+    updateUser2 () {
+      this.$store.dispatch('user/setUserSecond', {
+        name: 'xiaoming',
+        age: 28
+      })
     }
   }
 }
