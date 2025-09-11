@@ -102,7 +102,12 @@ export default {
       const res = await codeLogin(this.mobile, this.msgCode)
       this.$store.commit('user/setUserInfo', res.data)
       this.$toast('登陆成功')
-      this.$router.push('/')
+
+      // 判断地址栏有无回跳地址
+      // 1.如果有==>说明是其他页面，拦截登录来的，需要回跳
+      // 2.如果没有==>正常去首页
+      const url = this.$route.query.backUrl || '/'
+      this.$router.replace(url)
     }
 
   },
