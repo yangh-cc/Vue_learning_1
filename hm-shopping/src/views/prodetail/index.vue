@@ -81,11 +81,12 @@
 
     <!-- 底部 -->
     <div class="footer">
-      <div class="icon-home">
+      <div @click="$router.push('/')" class="icon-home">
         <van-icon name="wap-home-o" />
         <span>首页</span>
       </div>
-      <div class="icon-cart">
+      <div @click="$router.push('/cart')" class="icon-cart">
+        <span v-if="cartTotal > 0" class="num">{{ cartTotal }}</span>
         <van-icon name="shopping-cart-o" />
         <span>购物车</span>
       </div>
@@ -122,7 +123,7 @@
           <div class="btn" v-if="mode == 'cart'" @click="addCart">
             加入购物车
           </div>
-          <div class="btn now" v-else>立刻购买</div>
+          <div class="btn now" @click="goBuyNow" v-else>立刻购买</div>
         </div>
         <div class="btn-none" v-else>该商品已抢完</div>
       </div>
@@ -135,9 +136,11 @@ import { getProDetail, getProComments } from '@/api/product'
 import defaultImg from '@/assets/default-avatar.png'
 import CountBox from '@/components/CountBox.vue'
 import { addCart } from '@/api/cart'
+import loginConfirm from '@/mixins/loginConfirm'
 
 export default {
   components: { CountBox },
+  mixins: [loginConfirm],
   name: 'ProDetail',
   data () {
     return {
@@ -174,8 +177,6 @@ export default {
       this.images = detail.goods_images
     },
     async getComments () {
-      console.log(this.$route)
-
       const {
         data: { list, total }
       } = await getProComments(this.goodsId, 3)
@@ -191,35 +192,31 @@ export default {
       this.showPannel = true
     },
     async addCart () {
-      // 判断token 是否存在，不存在弹确认框，存在则继续请求操作
-      if (!this.$store.getters.token) {
-        this.$dialog
-          .confirm({
-            title: '温馨提示',
-            message: '此时需要先登录才能继续操作',
-            confirmButtonText: '去登陆',
-            cancelButtonText: '再逛逛'
-          })
-          .then(() => {
-            // 希望跳转登录--登录后能跳回来，需要在跳转时携带参数（当前的路径）
-            // this.$toute.fullPath(会包含查询参数)
-            this.$router.replace({
-              path: '/login',
-              query: {
-                backUrl: this.$route.fullPath
-              }
-            })
-          })
-          .catch(() => {})
+      if (this.loginConfirm()) {
         return
       }
-      const { data } = await this.addCart(
+      const { data } = await addCart(
         this.goodsId,
         this.addCount,
         this.detail.skuList[0].goods_sku_id
       )
       this.cartTotal = data.cartTotal
       this.$toast('加入购物车成功')
+    },
+    goBuyNow () {
+      // 未登录需要弹出确认框，复用确认框
+      if (this.loginConfirm()) {
+        return
+      }
+      this.$router.push({
+        path: '/pay',
+        query: {
+          mode: 'buyNow',
+          goodsId: this.goodsId,
+          goodsSkuId: this.detail.skuList[0].goods_sku_id,
+          goodsNum: this.addCount
+        }
+      })
     }
   }
 }
@@ -419,6 +416,22 @@ export default {
   }
   .btn-none {
     background-color: #cccccc;
+  }
+}
+.footer .icon-cart {
+  position: relative;
+  padding: 0 6px;
+  .num {
+    z-index: 999;
+    position: absolute;
+    top: -2px;
+    right: 0;
+    min-width: 16px;
+    padding: 0 4px;
+    color: #fff;
+    text-align: center;
+    background-color: #ee0a24;
+    border-radius: 50%;
   }
 }
 </style>
