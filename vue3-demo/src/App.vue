@@ -1,64 +1,23 @@
 <script setup>
-
-// export default {
-//   setup () {
-//     //数据
-//     const message = 'hello Vue3'
-//     //函数
-//     const logMessage = () => {
-//       console.log(message);
-//     }
-    
-//     return {
-//       message,
-//       logMessage
-//     }
-//   }
-// }
-
-
-//  const message = 'hello Vue3'
-//     // 函数
-//     const logMessage = () => {
-//       console.log(message);
-//     }
-// import {ref ,computed} from 'vue'
-// // const count = ref(0)
-// // const setCount =() => {
-// //   count.value++
-// // }
-// const count = ref(1)
-// const plusOne = computed({
-//   get: () => count.value+1,
-//   set:(val)=>{
-//     count.value = val-1
-//   }
-// })
-// plusOne.value = 1
-// console.log(count.value);
-
 //父传子
-import {ref} from 'vue'
-import SonCom from '@/components/son-com.vue'
-const money =ref(100)
+import { onMounted, onUpdated, ref } from "vue";
+let a = 10;
+const money = ref(100);
 const getMoney = () => {
-  money.value += 10
-}
-
-const changeFn = (newMony)=>{
-  money.value=newMony
-}
+  a += 10;
+};
+onUpdated(() => {
+  console.log("mou");
+});
 </script>
 
 <template>
-  <!-- <div>{{ count }}</div>
-  <button @click="setCount">按钮</button> -->
-
+  {{ a }}
   <div>
-    <h3>父组件-{{ money }}
+    <h3>
+      父组件-{{ money }}
       <button @click="getMoney">挣钱</button>
     </h3>
-    <SonCom @changeMoney="changeFn" car="宝马车" :money="money"></SonCom>
   </div>
 </template>
 
